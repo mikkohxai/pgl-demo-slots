@@ -1,15 +1,3 @@
 "use client"
-
-export default function Slot3() {
-  return (
-    <div style={{ minHeight: "100vh", background: "#F8F7F5", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div style={{ textAlign: "center", maxWidth: 400 }}>
-        <a href="/" style={{ fontSize: 12, color: "#534AB7", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4, marginBottom: 24 }}>← All slots</a>
-        <div style={{ width: 64, height: 64, borderRadius: 14, background: "#E8E6E1", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 16px", color: "#A8A5A0" }}>3</div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1E2832", marginBottom: 8 }}>Slot 3 — Empty</h2>
-        <p style={{ fontSize: 14, color: "#6B6966", lineHeight: 1.6, marginBottom: 16 }}>No prototype loaded. Replace this file with any React component to activate.</p>
-        <code style={{ fontSize: 12, background: "#EEEDFE", color: "#3C3489", padding: "6px 14px", borderRadius: 8 }}>src/app/slot-3/page.jsx</code>
-      </div>
-    </div>
-  )
-}
+import VerticalMapReveal from "../../components/VerticalMapReveal"
+export default function Slot3Page(){return(<div><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",justifyContent:"space-between",alignItems:"center",fontFamily:"'Lato',system-ui,sans-serif",fontSize:13}}><a href="/" style={{color:"#2166DB",textDecoration:"none",fontWeight:600}}>← All slots</a><span style={{color:"#636363",fontSize:11}}>Slot 3 · Vertical Map Reveal</span></div><VerticalMapReveal/></div>)}
