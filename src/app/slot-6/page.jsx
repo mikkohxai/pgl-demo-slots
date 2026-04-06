@@ -1,2 +1,29 @@
-"use client"
-export default function Slot6Page(){return(<div style={{fontFamily:"'Lato',system-ui,sans-serif"}}><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:13}}><a href="/" style={{color:"#2166DB",textDecoration:"none",fontWeight:600}}>← All slots</a><span style={{color:"#636363",fontSize:11}}>Slot 6 · Empty</span></div><div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:12}}><div style={{fontSize:36,opacity:.2}}>◇</div><div style={{fontSize:15,fontWeight:600,color:"#212121"}}>Slot 6</div><div style={{fontSize:13,color:"#636363"}}>Drop a component into src/components/ and wire it here</div></div></div>)}
+"use client";
+import ReferralEngine from "../../components/ReferralEngine";
+
+export default function Slot3() {
+  return (
+    <div>
+      <div style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999,
+        background: "#1B2A4A", padding: "6px 16px",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        fontFamily: "'DM Sans', -apple-system, sans-serif",
+        borderBottom: "2px solid #2A9D8F"
+      }}>
+        <a href="/" style={{ color: "#94A3B8", fontSize: 12, textDecoration: "none" }}>
+          ← All Slots
+        </a>
+        <span style={{ color: "#E9C46A", fontSize: 11, fontWeight: 600, letterSpacing: 0.5 }}>
+          SLOT 6 — REFERRAL ENGINE v2.0
+        </span>
+        <span style={{ color: "#6B7280", fontSize: 10 }}>
+          Phase 2 Feature Showcase
+        </span>
+      </div>
+      <div style={{ paddingTop: 36 }}>
+        <ReferralEngine />
+      </div>
+    </div>
+  );
+}
