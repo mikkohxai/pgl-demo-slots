@@ -221,7 +221,7 @@ function CommunityPanel(p){
       })}
 
       {/* Add community */}
-      {comms.length>0&&<button className="bt bt-g" style={{width:"100%",marginTop:4,fontSize:13}}>+ Add another community</button>}
+      {comms.length>0&&<button className="bt bt-g" style={{width:"100%",marginTop:4,fontSize:13}}onClick={function(){var nm=prompt("Community name:");if(nm){onSelect(null)}}}>+ Add another community</button>}
     </div>
   );
 }
@@ -285,7 +285,7 @@ function Quiz(p){
               {on&&<span style={{fontSize:13,fontWeight:600,color:cat.hx}}>✓</span>}
             </button>})}
         </div>
-        <div style={{marginTop:20}}><button className="bt bt-p" disabled={picked.length<1} onClick={function(){setStep(1)}}>Continue — add details →</button></div>
+        <div style={{marginTop:20}}><button className="bt bt-p" disabled={picked.length<1} onClick={p.next}>Generate my insights →</button></div>
       </div>
     </div></div>;
 
@@ -352,7 +352,7 @@ function Dashboard(){
         <p style={{fontSize:13,color:C.tb2}}>1 outreach/day × 5 days × 12 weeks = 60 touchpoints → 3 clients (3× your goal)</p>
       </div>
       <h3 style={{fontSize:15,fontWeight:600,margin:"0 0 12px"}}>Week 1 tasks</h3>
-      {SEED.length>0&&R.tasks.map(function(t,i){
+      {SEED.length>0&&[{tx:"Send a warm hello to 1 contact from your PTA network",ph:"outreach",cm:SEED[0]?SEED[0].nm:"",tm:"10 min"},{tx:"Reach out to 1 person from your fitness community about upcoming travel plans",ph:"outreach",cm:SEED[1]?SEED[1].nm:"",tm:"10 min"},{tx:"Update your Fora advisor profile with 2 new travel specialties",ph:"ops",cm:"",tm:"15 min"},{tx:"Send a personalized trip idea to a contact who mentioned travel recently",ph:"outreach",cm:SEED[2]?SEED[2].nm:"",tm:"10 min"},{tx:"Review your community list and add any missing contacts",ph:"ops",cm:"",tm:"20 min"},{tx:"Share a travel tip in one of your community group chats",ph:"outreach",cm:SEED[0]?SEED[0].nm:"",tm:"5 min"},{tx:"Draft a check-in message for a past client",ph:"outreach",cm:"",tm:"15 min"}].map(function(t,i){
         var d=done[i];var cm=t.cm?SEED.find(function(s){return s.nm===t.cm}):null;var cat=cm?catOf(cm.cat):null;
         return <div key={i} className="cd" style={{padding:"12px 14px",marginBottom:8,display:"flex",alignItems:"flex-start",gap:12,borderLeft:cat?"3px solid "+cat.hx:"3px solid "+C.b1}}>
           <button onClick={function(){setDone(function(prev){var n=Object.assign({},prev);n[i]=!n[i];return n})}} style={{width:22,height:22,borderRadius:4,border:"1.5px solid "+(d?C.ps:C.b1),background:d?C.pL:C.w,cursor:"pointer",flexShrink:0,marginTop:1,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,color:C.ps,padding:0}}>{d?"✓":""}</button>
@@ -368,8 +368,20 @@ function Dashboard(){
     </div>}
 
     {tab==="profile"&&<div style={{flex:1,padding:24,maxWidth:800,margin:"0 auto",width:"100%",display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
-      <div className="cd" style={{padding:20}}><h3 style={{fontSize:15,fontWeight:600,margin:"0 0 12px"}}>Advisor profile</h3><p style={{fontSize:13,color:C.t2,lineHeight:"22px"}}>Intake results · Network map · Writing styles · Dictionary · Banned phrases</p></div>
-      <div className="cd" style={{padding:20}}><h3 style={{fontSize:15,fontWeight:600,margin:"0 0 12px"}}>GTM profile</h3><p style={{fontSize:13,color:C.t2,lineHeight:"22px"}}>ICP · Client types · Travel preferences · Budget ranges</p></div>
+      <h2 style={{fontSize:18,fontWeight:700,margin:"0 0 20px"}}>Coach customizations</h2>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+        <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Writing style</h3><textarea style={{width:"100%",minHeight:80,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. Warm and conversational. I use exclamation points sparingly. I always sign off with my first name."/></div>
+        <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Voice-of-customer lens</h3><textarea style={{width:"100%",minHeight:80,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. My clients care about unique experiences over luxury. They want insider access, not five-star everything."/></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+        <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Brand phrases</h3><textarea style={{width:"100%",minHeight:60,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. Travel is my love language \xb7 Let me handle the details"/></div>
+        <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Banned phrases</h3><textarea style={{width:"100%",minHeight:60,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. deal \xb7 discount \xb7 cheap \xb7 package \xb7 bucket list"/></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+        <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Ideal client profile</h3><textarea style={{width:"100%",minHeight:80,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. Couples 35-55, HHI $250K+, value experiential travel, prefer boutique hotels, travel 3-4x/year."/></div>
+        <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Travel specialties</h3><textarea style={{width:"100%",minHeight:80,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. Italy (Amalfi, Tuscany) \xb7 Safari (Kenya) \xb7 Honeymoons \xb7 Multi-gen family"/></div>
+      </div>
+      <div className="cd" style={{padding:16}}><h3 style={{fontSize:13,fontWeight:600,margin:"0 0 8px"}}>Custom instructions</h3><textarea style={{width:"100%",minHeight:100,border:"1px solid "+C.b1,borderRadius:6,padding:10,fontSize:13,fontFamily:"inherit",color:C.t1,resize:"vertical",background:C.w}} placeholder="e.g. Always reference my Virtuoso connections for luxury hotels. Never suggest all-inclusive unless asked. Keep outreach under 3 paragraphs."/></div>
     </div>}
 
     <Footer/>
