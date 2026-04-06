@@ -19,7 +19,7 @@ export default function Home() {
       <div style={{ marginBottom: 32 }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 2, color: "#534AB7", textTransform: "uppercase", marginBottom: 6 }}>Pro Growth Lab</div>
         <h1 style={{ fontSize: 28, fontWeight: 700, color: "#1E2832", marginBottom: 4 }}>Demo Hub</h1>
-        <p style={{ fontSize: 14, color: "#6B6966", lineHeight: 1.6 }}>1 production prototype + 9 feature showcase slots. <a href="/resources" style={{ color: "#534AB7", fontWeight: 600 }}>View all resources →</a></p>
+        <p style={{ fontSize: 14, color: "#6B6966", lineHeight: 1.6 }}>1 production prototype + 9 feature showcase slots. <a href="/resources" style={{ color: "#534AB7", fontWeight: 600 }}>Resources →</a>  ·  <a href="/moc" style={{ color: "#534AB7", fontWeight: 600 }}>Sprint 1 MOC →</a></p>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {SLOTS.map(s => (
@@ -39,7 +39,7 @@ export default function Home() {
         ))}
       </div>
       <div style={{ marginTop: 20, padding: "12px 16px", background: "#EEEDFE", borderRadius: 10, fontSize: 12, color: "#3C3489", lineHeight: 1.6 }}>
-        <strong>Slot 1</strong> = latest full prototype. <strong>Slots 2–10</strong> = individual feature demos. <a href="/resources" style={{ color: "#534AB7", fontWeight: 600 }}>All artifacts + Figma + Jira →</a>
+        <strong>Slot 1</strong> = latest full prototype. <strong>Slots 2–10</strong> = individual feature demos. <a href="/resources" style={{ color: "#534AB7", fontWeight: 600 }}>Resources →</a>  ·  <a href="/moc" style={{ color: "#534AB7", fontWeight: 600 }}>Sprint 1 MOC →</a>
       </div>
       <div style={{ textAlign: "center", padding: "14px 0", fontSize: 11, color: "#A8A5A0", marginTop: 10 }}>Last verified: April 7, 2026 · {SLOTS.filter(s => s.status === "live").length} of 10 slots active</div>
     </div>
