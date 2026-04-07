@@ -1,3 +1,3 @@
-"use client"
-import ActionCalendar from "../../components/ActionCalendar"
-export default function Slot4Page(){return(<div><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",justifyContent:"space-between",alignItems:"center",fontFamily:"'Lato',system-ui,sans-serif",fontSize:13}}><a href="/" style={{color:"#2166DB",textDecoration:"none",fontWeight:600}}>← All slots</a><span style={{color:"#636363",fontSize:11}}>Slot 4 · Action Calendar</span></div><ActionCalendar/></div>)}
+"use client";
+import ACTActionCalendar from "../../components/ACTActionCalendar";
+export default function S4() { return <div><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",alignItems:"center",justifyContent:"space-between"}}><a href="/" style={{fontSize:13,color:"#2166DB",textDecoration:"none",fontFamily:"'Lato',system-ui,sans-serif"}}>All slots</a><span style={{fontSize:11,color:"#636363",fontFamily:"'Lato',system-ui,sans-serif"}}>Slot 4 — Action Calendar</span></div><ACTActionCalendar/></div>; }

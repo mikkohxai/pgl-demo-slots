@@ -1,28 +1,3 @@
-"use client"
-
-import ACTPrototypeSuite from "../../components/ACTPrototypeSuite"
-
-export default function Slot2Page() {
-  return (
-    <div>
-      <div style={{
-        padding: "8px 16px",
-        borderBottom: "1px solid #D8D8D8",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        fontFamily: "'Lato', system-ui, sans-serif",
-        fontSize: 13,
-        background: "#FFFFFF",
-      }}>
-        <a href="/" style={{ color: "#2166DB", textDecoration: "none", fontWeight: 600 }}>
-          ← All slots
-        </a>
-        <span style={{ color: "#636363", fontSize: 11 }}>
-          Slot 2 · Feature Showcase · ACT Enrichment Prototype Suite
-        </span>
-      </div>
-      <ACTPrototypeSuite />
-    </div>
-  )
-}
+"use client";
+import ACTHomeDashboard from "../../components/ACTHomeDashboard";
+export default function S2() { return <div><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",alignItems:"center",justifyContent:"space-between"}}><a href="/" style={{fontSize:13,color:"#2166DB",textDecoration:"none",fontFamily:"'Lato',system-ui,sans-serif"}}>All slots</a><span style={{fontSize:11,color:"#636363",fontFamily:"'Lato',system-ui,sans-serif"}}>Slot 2 — Home Dashboard</span></div><ACTHomeDashboard/></div>; }

@@ -1,10 +1,3 @@
 "use client";
-export default function Slot5Page() {
-  return (
-    <div style={{ padding: 40, fontFamily: "'Lato',system-ui,sans-serif", textAlign: "center" }}>
-      <a href="/" style={{ fontSize: 13, color: "#2166DB", textDecoration: "none" }}>← All slots</a>
-      <h2 style={{ fontSize: 20, marginTop: 40, color: "#212121" }}>Slot 5 — Temporarily offline</h2>
-      <p style={{ fontSize: 13, color: "#636363", marginTop: 8 }}>Network Insights Report returning soon.</p>
-    </div>
-  );
-}
+import ACTAdvisorProfile from "../../components/ACTAdvisorProfile";
+export default function S5() { return <div><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",alignItems:"center",justifyContent:"space-between"}}><a href="/" style={{fontSize:13,color:"#2166DB",textDecoration:"none",fontFamily:"'Lato',system-ui,sans-serif"}}>All slots</a><span style={{fontSize:11,color:"#636363",fontFamily:"'Lato',system-ui,sans-serif"}}>Slot 5 — Advisor Profile</span></div><ACTAdvisorProfile/></div>; }
