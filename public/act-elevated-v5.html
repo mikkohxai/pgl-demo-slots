@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Growth Lab — Network Mapper</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0C0B0F;--bg2:#141318;--bg3:#1C1B22;
+  --surface:rgba(255,255,255,0.04);--surface2:rgba(255,255,255,0.07);--surface3:rgba(255,255,255,0.10);
+  --glass:rgba(255,255,255,0.06);--glass-border:rgba(255,255,255,0.10);--glass-border-h:rgba(255,255,255,0.18);
+  --text:#F5F1EC;--text2:rgba(245,241,236,0.6);--text3:rgba(245,241,236,0.35);
+  --cream:#F3EBE2;--cream-dim:rgba(243,235,226,0.15);--cream-glow:rgba(243,235,226,0.08);
+  --brown:#63574A;--brown-d:#423A31;
+  --t1:#8B7E6F;--t1-glow:rgba(139,126,111,0.25);
+  --t2:#4CAF7D;--t2-glow:rgba(76,175,125,0.20);
+  --t3:#D4A842;--t3-glow:rgba(212,168,66,0.20);
+  --pos:#1A4A7A;--pos-glow:rgba(26,74,122,0.20);
+  --ai:#8655F6;--ai-glow:rgba(134,85,246,0.15);
+  --neg:#FF5A5A;
+  --glow-warm:radial-gradient(ellipse at 50% 100%, rgba(243,235,226,0.12) 0%, transparent 70%);
+  --glow-warm-s:radial-gradient(ellipse at 50% 100%, rgba(243,235,226,0.06) 0%, transparent 60%);
+  --r:14px;--r-sm:8px;--r-pill:100px;
+  --font:'Lato',system-ui,-apple-system,sans-serif;
+  --ease:cubic-bezier(0.34,1.56,0.64,1);
+}
+html,body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* Glow ambient background */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ambient::before{content:'';position:absolute;width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(134,85,246,0.06) 0%,transparent 70%);animation:drift 20s ease-in-out infinite}
+.ambient::after{content:'';position:absolute;width:800px;height:800px;bottom:-300px;left:-200px;background:radial-gradient(circle,rgba(243,235,226,0.05) 0%,transparent 70%);animation:drift 25s ease-in-out infinite reverse}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
+
+/* Glass card */
+.glass{background:var(--glass);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%);border:1px solid var(--glass-border);border-radius:var(--r);transition:all 0.35s ease}
+.glass:hover{border-color:var(--glass-border-h)}
+.glass-warm{position:relative;overflow:hidden}
+.glass-warm::after{content:'';position:absolute;bottom:-2px;left:10%;right:10%;height:60%;background:var(--glow-warm);pointer-events:none;border-radius:0 0 var(--r) var(--r)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--r-sm);border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s ease;position:relative;overflow:hidden}
+.btn-primary{background:var(--cream);color:var(--brown-d)}
+.btn-primary:hover{box-shadow:0 0 30px rgba(243,235,226,0.25);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--glass-border)}
+.btn-ghost:hover{border-color:var(--glass-border-h);color:var(--text);background:var(--surface)}
+.btn-dark{background:var(--surface2);color:var(--text);border:1px solid var(--glass-border)}
+.btn-dark:hover{background:var(--surface3);border-color:var(--glass-border-h)}
+
+/* Pills */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:4px 12px;border-radius:var(--r-pill);letter-spacing:0.04em;text-transform:uppercase}
+
+/* Input */
+.input{width:100%;padding:14px 18px;border-radius:var(--r-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:all 0.3s ease}
+.input:focus{border-color:rgba(243,235,226,0.3);box-shadow:0 0 20px rgba(243,235,226,0.06)}
+.input::placeholder{color:var(--text3)}
+
+/* Typography */
+.t-label{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3)}
+.t-h1{font-size:32px;font-weight:700;letter-spacing:-0.03em;line-height:1.15}
+.t-h2{font-size:22px;font-weight:700;letter-spacing:-0.02em;line-height:1.2}
+.t-h3{font-size:15px;font-weight:600;line-height:1.4}
+.t-body{font-size:13px;color:var(--text2);line-height:1.65}
+.t-sm{font-size:11px;color:var(--text3);line-height:1.5}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes nodeIn{from{opacity:0;transform:scale(0.85) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.15}50%{opacity:0.4}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 15px var(--glow-c)}50%{box-shadow:0 0 30px var(--glow-c)}}
+.anim-up{animation:fadeUp 0.6s ease both}
+.anim-node{animation:nodeIn 0.5s var(--ease) both}
+
+/* Layout */
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.nav{display:flex;gap:2px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,0.06);overflow-x:auto}
+.nav button{padding:13px 18px;font-size:12px;font-weight:400;color:var(--text3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all 0.2s}
+.nav button.active{color:var(--cream);font-weight:600;border-bottom-color:var(--cream)}
+.nav button:hover:not(.active){color:var(--text2)}
+
+/* Community node */
+.node{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:var(--r);cursor:pointer;transition:all 0.35s var(--ease);position:relative}
+.node:hover{transform:scale(1.015)}
+.node-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:box-shadow 0.4s}
+.node:hover .node-dot{box-shadow:0 0 20px var(--glow-c,rgba(255,255,255,0.1))}
+
+/* Tab content */
+.tab-content{padding:28px;flex:1}
+
+/* Responsive */
+@media(max-width:768px){.split{flex-direction:column !important}.sidebar{display:none !important}}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="app" id="app"></div>
+
+<script>
+var F={
+  cream:'#F3EBE2',brown:'#63574A',brownD:'#423A31',
+  t1:'#8B7E6F',t1g:'rgba(139,126,111,0.20)',t1bg:'rgba(139,126,111,0.08)',
+  t2:'#4CAF7D',t2g:'rgba(76,175,125,0.20)',t2bg:'rgba(76,175,125,0.08)',
+  t3:'#D4A842',t3g:'rgba(212,168,66,0.20)',t3bg:'rgba(212,168,66,0.08)',
+  pos:'#5B9BD5',posg:'rgba(91,155,213,0.15)',
+  ai:'#8655F6',aig:'rgba(134,85,246,0.12)',
+  neg:'#FF5A5A',white:'#F5F1EC',
+};
+var CATS=[
+  {id:'personal',name:'Personal & Family',emoji:'❤️',color:F.t1,glow:F.t1g,bg:F.t1bg},
+  {id:'professional',name:'Professional & Alumni',emoji:'💼',color:F.ai,glow:F.aig,bg:'rgba(134,85,246,0.06)'},
+  {id:'fitness',name:'Fitness & Sports',emoji:'🏃',color:F.t2,glow:F.t2g,bg:F.t2bg},
+  {id:'religious',name:'Religious & Spiritual',emoji:'🕊️',color:F.t3,glow:F.t3g,bg:F.t3bg},
+  {id:'hobby',name:'Hobby & Interest',emoji:'📚',color:F.pos,glow:F.posg,bg:'rgba(91,155,213,0.06)'},
+  {id:'neighborhood',name:'Neighborhood & Local',emoji:'📍',color:'#D4820A',glow:'rgba(212,130,10,0.15)',bg:'rgba(212,130,10,0.06)'},
+];
+var ACTIONS=[
+  {day:'Mon',text:'Text 3 parents from your community you\'d grab coffee with. No travel mention.',cc:'personal',ph:'Plant',t:11},
+  {day:'Tue',text:'Post a workout selfie with your fitness group hashtag. Authenticity over polish.',cc:'fitness',ph:'Plant',t:5},
+  {day:'Wed',text:'Comment on 2 alumni LinkedIn posts. Add value, not a pitch.',cc:'professional',ph:'Plant',t:11},
+  {day:'Thu',text:'DM your hobby group: "Anyone reading anything set in Italy?"',cc:'hobby',ph:'Plant',t:5},
+  {day:'Fri',text:'Write a contact list — 5 from each community most likely to travel this year.',cc:null,ph:'Plant',t:20},
+  {day:'Mon',text:'Follow up on the coffee from last week. Ask about their upcoming plans.',cc:'personal',ph:'Grow',t:11},
+  {day:'Wed',text:'Share a destination article in your alumni group with a personal note.',cc:'professional',ph:'Grow',t:9},
+  {day:'Fri',text:'Reach out to your top 3 prospects with a specific trip idea tailored to their family.',cc:null,ph:'Convert',t:15},
+];
+var DMS=[
+  {tier:'Warm reconnect',tone:'Casual, no travel mention',text:'Hey Sarah! Been meaning to catch up — I saw Ella\'s science fair project on the school page, so cool! Coffee at Bean & Leaf this week?',why:'Opens with a specific personal detail. No travel mention. Re-establishing the relationship comes first.'},
+  {tier:'Soft bridge',tone:'Natural transition to travel',text:'By the way, I just learned about this incredible family resort in Costa Rica — made me think of you guys. Want me to send the details?',why:'Bridges from personal to travel naturally. "Made me think of you" framing makes it feel like a gift, not a pitch.'},
+  {tier:'Direct value',tone:'Clear ask, zero pressure',text:'I\'m putting together a small group trip for school families this summer — Italy, kid-friendly, all logistics handled. Would you and Mark want in?',why:'Creates exclusivity ("small group") and removes friction ("all logistics handled"). Easy yes-or-no question.'},
+];
+
+/* ═══ STATE ═══ */
+var state={
+  screen:'login',email:'demo@fora.travel',err:'',
+  entries:[],
+  contacts:[],
+  tab:'map',activeNode:null,phF:'all',
+  icp:'',ws:'',bp:'',
+  showAddComm:false,showAddCon:false,
+};
+
+function catFor(id){return CATS.find(function(c){return c.id===id;})||CATS[0];}
+function phColor(ph){return ph==='Plant'?F.t2:ph==='Grow'?F.ai:F.t3;}
+
+function toggleAddComm(){state.showAddComm=!state.showAddComm;render();setTimeout(function(){var el=document.getElementById('newCommName');if(el)el.focus();},50);}
+function addComm(){
+  var name=document.getElementById('newCommName');
+  var web=document.getElementById('newCommWeb');
+  var cat=document.getElementById('newCommCat');
+  var size=document.getElementById('newCommSize');
+  if(!name||!name.value.trim())return;
+  state.entries.push({id:'c'+Date.now(),catId:cat.value,name:name.value.trim(),website:web.value.trim(),count:parseInt(size.value)||0});
+  state.showAddComm=false;render();
+}
+function rmComm(id){state.entries=state.entries.filter(function(e){return e.id!==id;});state.activeNode=null;render();}
+
+function toggleAddCon(){state.showAddCon=!state.showAddCon;render();setTimeout(function(){var el=document.getElementById('newConName');if(el)el.focus();},50);}
+function addCon(){
+  var name=document.getElementById('newConName');
+  var comm=document.getElementById('newConComm');
+  var method=document.getElementById('newConMethod');
+  if(!name||!name.value.trim())return;
+  state.contacts.push({id:'ct'+Date.now(),name:name.value.trim(),community:comm.value,method:method.value});
+  state.showAddCon=false;render();
+}
+function rmCon(id){state.contacts=state.contacts.filter(function(c){return c.id!==id;});render();}
+
+/* ═══ RENDER ═══ */
+function render(){
+  var app=document.getElementById('app');
+  if(state.screen==='login') return renderLogin(app);
+  if(state.screen==='dashboard') return renderDashboard(app);
+}
+
+/* ═══ LOGIN ═══ */
+function renderLogin(el){
+  el.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;min-height:100vh">'
+  +'<div style="width:100%;max-width:420px;text-align:center" class="anim-up">'
+  
+  // Logo area with glow
+  +'<div style="position:relative;margin-bottom:48px">'
+  +'<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(243,235,226,0.08) 0%,transparent 70%);pointer-events:none"></div>'
+  +'<p class="t-label" style="margin-bottom:12px;color:'+F.cream+'">Pro Growth Lab</p>'
+  +'<h1 class="t-h1" style="margin-bottom:16px">Map your network.<br>Grow your business.</h1>'
+  +'<p class="t-body" style="max-width:320px;margin:0 auto">Surface the people most likely to become clients and build the habits that generate real results.</p>'
+  +'</div>'
+  
+  // Login card
+  +'<div class="glass glass-warm" style="padding:32px;text-align:left">'
+  +'<label class="t-label" style="display:block;margin-bottom:10px">Email address</label>'
+  +'<input id="emailIn" class="input" value="'+state.email+'" placeholder="you@fora.travel" style="margin-bottom:12px">'
+  +'<div id="errBox" style="display:'+(state.err?'flex':'none')+';gap:8px;padding:12px 14px;background:rgba(255,90,90,0.08);border:1px solid rgba(255,90,90,0.2);border-radius:8px;margin-bottom:14px;align-items:flex-start">'
+  +'<span style="color:'+F.neg+';font-size:11px;line-height:1.5">'+state.err+'</span></div>'
+  +'<button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="doLogin()">Sign in</button>'
+  +'</div>'
+  
+  // Demo hint
+  +'<div style="margin-top:24px;padding:14px 20px;border-radius:'+('var(--r-sm)')+';background:var(--surface);border:1px solid var(--glass-border)">'
+  +'<p class="t-sm">Demo: try <span style="font-weight:600;color:var(--cream)">demo@fora.travel</span></p>'
+  +'</div>'
+  
+  +'<p class="t-sm" style="margin-top:20px">Available to invited Pro Growth Lab advisors only.</p>'
+  +'</div></div>';
+  
+  document.getElementById('emailIn').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+}
+
+function doLogin(){
+  var e=document.getElementById('emailIn').value.trim().toLowerCase();
+  if(!e||!e.endsWith('@fora.travel')){state.err='We couldn\'t find your email in our advisor list. Reach out to your program lead.';state.email=e;render();return;}
+  state.err='';state.email=e;state.screen='dashboard';render();
+}
+
+/* ═══ DASHBOARD ═══ */
+function renderDashboard(el){
+  var totalC=state.entries.reduce(function(s,e){return s+(e.count||0);},0);
+  var tabs=[
+    {id:'map',label:'Network map',icon:'◉'},
+    {id:'calendar',label:'Outreach plan',icon:'📅'},
+    {id:'contacts',label:'Contacts',icon:'👤'},
+    {id:'scripts',label:'DM scripts',icon:'💬'},
+    {id:'profile',label:'Profile',icon:'⚙️'},
+  ];
+  
+  var html='';
+  // Header
+  html+='<div class="header">'
+  +'<div style="display:flex;align-items:center;gap:12px">'
+  +'<span style="font-size:12px;font-weight:600;color:var(--cream);letter-spacing:0.04em">Pro Growth Lab</span>'
+  +'<span class="pill" style="background:var(--ai-glow);color:'+F.ai+';border:1px solid rgba(134,85,246,0.2)">BETA</span>'
+  +'<span class="pill" style="background:var(--surface);color:var(--text3);border:1px solid var(--glass-border)">ACT-NM-01 v5.0.0</span>'
+  +'</div>'
+  +'<span class="t-sm">Apr 9, 2026</span>'
+  +'</div>';
+  
+  // Tabs
+  html+='<div class="nav">';
+  tabs.forEach(function(t){
+    html+='<button class="'+(state.tab===t.id?'active':'')+'" onclick="setTab(\''+t.id+'\')">'
+    +t.icon+' '+t.label+'</button>';
+  });
+  html+='</div>';
+  
+  // Tab content
+  html+='<div class="tab-content">';
+  
+  if(state.tab==='map') html+=renderMap();
+  if(state.tab==='calendar') html+=renderCalendar();
+  if(state.tab==='contacts') html+=renderContacts();
+  if(state.tab==='scripts') html+=renderScripts();
+  if(state.tab==='profile') html+=renderProfile();
+  
+  html+='</div>';
+  
+  // Footer
+  html+='<div class="header" style="border-top:1px solid rgba(255,255,255,0.06);border-bottom:none">'
+  +'<span class="t-sm">Pro Growth Lab · Fora Travel</span>'
+  +'<a href="#" onclick="event.preventDefault();alert(\'Feedback submitted. Thank you!\')" class="t-sm" style="color:'+F.pos+';text-decoration:none;font-weight:600">⚑ Report a problem</a>'
+  +'</div>';
+  
+  el.innerHTML=html;
+}
+
+function setTab(id){state.tab=id;state.activeNode=null;render();}
+
+/* ═══ MAP TAB ═══ */
+function renderMap(){
+  var h='<div class="anim-up">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">';
+  h+='<div><h2 class="t-h2" style="margin-bottom:4px">Your network</h2><p class="t-body">Click any community to see details and outreach strategies.</p></div>';
+  h+='<div style="display:flex;gap:16px" class="t-sm">';
+  [{l:'1st degree',c:F.t1},{l:'2nd degree',c:F.t2},{l:'3rd degree',c:F.t3}].forEach(function(t){
+    h+='<span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:'+t.c+'"></span>'+t.l+'</span>';
+  });
+  h+='</div></div>';
+  
+  // Network map visualization
+  h+='<div class="glass" style="padding:32px;margin-bottom:24px;position:relative;min-height:400px;overflow:hidden">';
+  
+  // Tier rings (SVG)
+  h+='<svg viewBox="0 0 500 400" style="width:100%;height:400px">';
+  // Concentric rings
+  h+='<circle cx="250" cy="200" r="170" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,8"/>';
+  h+='<circle cx="250" cy="200" r="110" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,8"/>';
+  h+='<circle cx="250" cy="200" r="50" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4,8"/>';
+  
+  // Center "You" node
+  h+='<circle cx="250" cy="200" r="24" fill="'+F.brownD+'"/>';
+  h+='<text x="250" y="204" text-anchor="middle" fill="'+F.cream+'" font-family="Lato" font-size="11" font-weight="700">You</text>';
+  
+  // Fora Travel node (permanent first — MC-097)
+  h+='<line x1="250" y1="200" x2="250" y2="130" stroke="rgba(243,235,226,0.15)" stroke-width="1"/>';
+  h+='<circle cx="250" cy="110" r="20" fill="rgba(139,126,111,0.12)" stroke="'+F.t1+'" stroke-width="1.5"/>';
+  h+='<text x="250" y="106" text-anchor="middle" fill="'+F.cream+'" font-family="Lato" font-size="8" font-weight="700">Fora</text>';
+  h+='<text x="250" y="117" text-anchor="middle" fill="'+F.cream+'" font-family="Lato" font-size="7" font-weight="400">Travel</text>';
+  
+  // Community nodes positioned around center
+  var positions=[
+    {x:130,y:140},{x:370,y:140},{x:100,y:260},{x:400,y:260},{x:200,y:320}
+  ];
+  
+  // Empty state: ghost dashed circles
+  if(state.entries.length===0){
+    [{x:130,y:140},{x:370,y:160},{x:250,y:310}].forEach(function(p,i){
+      h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="20" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" stroke-dasharray="4,6" opacity="0.5"><animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" begin="'+(i*0.8)+'s" repeatCount="indefinite"/></circle>';
+    });
+    h+='<text x="250" y="380" text-anchor="middle" fill="rgba(245,241,236,0.25)" font-family="Lato" font-size="12">Complete the quiz to build your network map</text>';
+  }
+  state.entries.forEach(function(e,i){
+    var cat=catFor(e.catId);
+    var p=positions[i]||{x:250+Math.cos(i)*130,y:200+Math.sin(i)*100};
+    var isActive=state.activeNode===e.id;
+    var r=isActive?22:17;
+    // Connection line
+    h+='<line x1="250" y1="200" x2="'+p.x+'" y2="'+p.y+'" stroke="'+cat.color+'" stroke-width="1" opacity="0.15"/>';
+    // Glow
+    h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(r+8)+'" fill="'+cat.glow+'" opacity="'+(isActive?1:0.5)+'"/>';
+    // Node
+    h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+r+'" fill="'+cat.bg+'" stroke="'+cat.color+'" stroke-width="'+(isActive?2:1)+'" style="cursor:pointer" onclick="clickNode(\''+e.id+'\')"/>';
+    // Label
+    var words=e.name.split(' ');
+    if(words.length<=2){
+      h+='<text x="'+p.x+'" y="'+(p.y-(words.length>1?4:1))+'" text-anchor="middle" fill="'+cat.color+'" font-family="Lato" font-size="7" font-weight="600">'+words[0]+'</text>';
+      if(words[1]) h+='<text x="'+p.x+'" y="'+(p.y+6)+'" text-anchor="middle" fill="'+cat.color+'" font-family="Lato" font-size="7" font-weight="600">'+words[1]+'</text>';
+    } else {
+      h+='<text x="'+p.x+'" y="'+(p.y-4)+'" text-anchor="middle" fill="'+cat.color+'" font-family="Lato" font-size="6" font-weight="600">'+words.slice(0,2).join(' ')+'</text>';
+      h+='<text x="'+p.x+'" y="'+(p.y+5)+'" text-anchor="middle" fill="'+cat.color+'" font-family="Lato" font-size="6" font-weight="600">'+words.slice(2).join(' ')+'</text>';
+    }
+  });
+  
+  h+='</svg></div>';
+  
+  // Community list
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">';
+  h+='<span class="t-label">Your communities</span>';
+  h+='<button class="btn btn-ghost" style="padding:8px 16px;font-size:12px" onclick="toggleAddComm()">+ Add community</button>';
+  h+='</div>';
+  
+  // Add community form
+  if(state.showAddComm){
+    h+='<div class="glass anim-up" style="padding:24px;margin-bottom:16px;border-color:rgba(243,235,226,0.2)">';
+    h+='<p class="t-h3" style="color:var(--cream);margin-bottom:16px">Add a community</p>';
+    h+='<div style="display:flex;flex-direction:column;gap:12px">';
+    h+='<div style="display:flex;gap:10px">';
+    h+='<div style="flex:1"><label class="t-sm" style="display:block;margin-bottom:5px">Community name</label>';
+    h+='<input id="newCommName" class="input" placeholder="e.g., Lincoln Elementary PTA" onkeydown="if(event.key===\'Enter\')addComm()"></div>';
+    h+='<div style="flex:1"><label class="t-sm" style="display:block;margin-bottom:5px">Website or link (optional)</label>';
+    h+='<input id="newCommWeb" class="input" placeholder="e.g., lincolnpta.org"></div>';
+    h+='</div>';
+    h+='<div style="display:flex;gap:10px">';
+    h+='<div style="flex:1"><label class="t-sm" style="display:block;margin-bottom:5px">Category</label>';
+    h+='<select id="newCommCat" class="input" style="cursor:pointer">';
+    CATS.forEach(function(c){h+='<option value="'+c.id+'">'+c.emoji+' '+c.name+'</option>';});
+    h+='</select></div>';
+    h+='<div style="flex:1"><label class="t-sm" style="display:block;margin-bottom:5px">Approximate size</label>';
+    h+='<select id="newCommSize" class="input" style="cursor:pointer">';
+    h+='<option value="">Select range</option><option value="10">1–10 people</option><option value="25">11–25 people</option><option value="50">26–50 people</option><option value="100">51–100 people</option><option value="250">101–250 people</option><option value="500">250+ people</option>';
+    h+='</select></div>';
+    h+='</div>';
+    h+='<div style="display:flex;gap:10px;margin-top:4px">';
+    h+='<button class="btn btn-primary" style="padding:10px 24px;font-size:13px" onclick="addComm()">Add community</button>';
+    h+='<button class="btn btn-ghost" style="padding:10px 18px;font-size:13px" onclick="toggleAddComm()">Cancel</button>';
+    h+='</div></div></div>';
+  }
+  
+  // Fora Travel permanent node
+  h+='<div class="glass" style="display:flex;align-items:center;gap:14px;padding:16px 20px;margin-bottom:10px;border-color:rgba(243,235,226,0.12)">';
+  h+='<div style="width:36px;height:36px;border-radius:50%;background:rgba(243,235,226,0.08);display:flex;align-items:center;justify-content:center;font-size:14px">💼</div>';
+  h+='<div style="flex:1"><p class="t-h3" style="color:var(--cream)">Fora Travel</p><p class="t-sm">Your advisor community</p></div>';
+  h+='<span class="pill" style="background:var(--cream-dim);color:var(--cream)">1,500+ advisors</span>';
+  h+='</div>';
+  
+  // Entry nodes
+  state.entries.forEach(function(e,i){
+    var cat=catFor(e.catId);
+    var isActive=state.activeNode===e.id;
+    h+='<div class="node glass anim-node" style="margin-bottom:10px;animation-delay:'+(i*80)+'ms;'
+    +(isActive?'border-color:'+cat.color+';box-shadow:0 0 25px '+cat.glow+';':'')
+    +'border-left:3px solid '+cat.color+'" onclick="clickNode(\''+e.id+'\')">';
+    h+='<div class="node-dot" style="background:'+cat.bg+';border:1.5px solid '+cat.color+';--glow-c:'+cat.glow+';color:'+cat.color+'">'+cat.emoji+'</div>';
+    h+='<div style="flex:1;min-width:0"><p class="t-h3">'+e.name+'</p><p class="t-sm">'+cat.name+(e.website?' · '+e.website:'')+'</p></div>';
+    if(e.count) h+='<span style="font-size:18px;font-weight:700;color:'+cat.color+'">'+e.count+'</span>';
+    h+='</div>';
+    
+    // Detail panel
+    if(isActive){
+      h+='<div class="glass anim-up" style="margin:-4px 0 10px;padding:24px;border-color:'+cat.color+';border-top:none;border-top-left-radius:0;border-top-right-radius:0">';
+      h+='<div style="display:flex;gap:24px;flex-wrap:wrap">';
+      h+='<div><p style="font-size:28px;font-weight:700;color:'+cat.color+'">'+(e.count||'—')+'</p><p class="t-sm">Estimated connections</p></div>';
+      h+='<div style="flex:1;min-width:200px;padding:18px;background:rgba(134,85,246,0.06);border:1px solid rgba(134,85,246,0.12);border-radius:var(--r-sm);display:flex;align-items:center;gap:12px">';
+      h+='<span style="font-size:18px">✨</span>';
+      h+='<div><p class="t-h3" style="color:'+F.ai+'">Expand your network</p><p class="t-sm">Share more details to unlock personalized outreach strategies.</p></div>';
+      h+='</div></div></div>';
+    }
+  });
+  
+  // Empty state for community list
+  if(state.entries.length===0){
+    h+='<div class="glass" style="padding:32px;text-align:center;border-style:dashed">';
+    h+='<div style="display:flex;justify-content:center;gap:14px;margin-bottom:18px">';
+    [1,2,3].forEach(function(i){
+      h+='<div style="width:40px;height:40px;border-radius:50%;border:2px dashed rgba(255,255,255,0.1)"><div style="width:100%;height:100%;border-radius:50%;opacity:0;animation:pulse 2.5s ease-in-out '+(i*0.4)+'s infinite"></div></div>';
+    });
+    h+='</div>';
+    h+='<p class="t-body" style="margin-bottom:6px">Your communities will appear here as you add them.</p>';
+    h+='<p class="t-sm">Complete the quiz to start mapping your network.</p>';
+    h+='</div>';
+  }
+  
+  h+='</div>';
+  return h;
+}
+
+function clickNode(id){state.activeNode=state.activeNode===id?null:id;render();}
+
+/* ═══ CALENDAR TAB ═══ */
+function renderCalendar(){
+  var filtered=state.phF==='all'?ACTIONS:ACTIONS.filter(function(a){return a.ph===state.phF;});
+  var h='<div class="anim-up">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">';
+  h+='<div><h2 class="t-h2" style="margin-bottom:4px">Your outreach plan</h2><p class="t-body">Relationship building across Plant, Grow, and Convert phases.</p></div>';
+  h+='<div style="display:flex;gap:6px">';
+  ['all','Plant','Grow','Convert'].forEach(function(f){
+    var a=state.phF===f;
+    var c=f==='all'?F.cream:phColor(f);
+    h+='<button class="btn '+(a?'':'btn-ghost')+'" style="padding:8px 16px;font-size:11px;font-weight:600;'
+    +(a?'background:'+c+';color:var(--bg);box-shadow:0 0 15px '+c+'33;':'')
+    +'" onclick="setPhF(\''+f+'\')">'+(f==='all'?'All':f)+'</button>';
+  });
+  h+='</div></div>';
+  
+  h+='<div style="display:flex;flex-direction:column;gap:10px">';
+  filtered.forEach(function(a,i){
+    var cat=a.cc?catFor(a.cc):null;
+    var pc=phColor(a.ph);
+    h+='<div class="glass anim-node" style="padding:20px;border-left:3px solid '+(cat?cat.color:'var(--text3)')+';animation-delay:'+(i*60)+'ms">';
+    h+='<div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">';
+    h+='<span class="pill" style="background:var(--surface2);color:var(--text2)">'+a.day+'</span>';
+    if(cat) h+='<span class="pill" style="background:'+cat.bg+';color:'+cat.color+';border:1px solid '+cat.glow+'">'+cat.name.split(' ')[0]+'</span>';
+    h+='<span class="pill" style="background:'+pc+'15;color:'+pc+';border:1px solid '+pc+'25">'+a.ph+'</span>';
+    h+='<span class="pill" style="background:var(--surface);color:var(--text3);border:1px solid var(--glass-border)">🕐 '+a.t+' min</span>';
+    h+='</div>';
+    h+='<p style="font-size:13px;line-height:1.55;color:var(--text)">'+a.text+'</p>';
+    h+='</div>';
+  });
+  h+='</div>';
+  
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06)">';
+  h+='<p class="t-body">Ready to start reaching out?</p>';
+  h+='<button class="btn btn-primary" onclick="setTab(\'scripts\')">View DM scripts →</button>';
+  h+='</div></div>';
+  return h;
+}
+
+function setPhF(f){state.phF=f;render();}
+
+/* ═══ CONTACTS TAB ═══ */
+function renderContacts(){
+  var h='<div class="anim-up">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">';
+  h+='<div><h2 class="t-h2" style="margin-bottom:4px">Your contacts</h2><p class="t-body">Link each person to a community for smarter outreach later.</p></div>';
+  h+='<button class="btn btn-primary" style="padding:10px 20px;font-size:12px" onclick="toggleAddCon()">+ Add contact</button>';
+  h+='</div>';
+  
+  // Add contact form
+  if(state.showAddCon){
+    h+='<div class="glass anim-up" style="padding:24px;margin-bottom:16px;border-color:rgba(243,235,226,0.2)">';
+    h+='<p class="t-h3" style="color:var(--cream);margin-bottom:16px">Add a contact</p>';
+    h+='<div style="display:flex;flex-direction:column;gap:12px">';
+    h+='<div><label class="t-sm" style="display:block;margin-bottom:5px">Name</label>';
+    h+='<input id="newConName" class="input" placeholder="e.g., Sarah Chen" onkeydown="if(event.key===\'Enter\')addCon()"></div>';
+    h+='<div style="display:flex;gap:10px">';
+    h+='<div style="flex:1"><label class="t-sm" style="display:block;margin-bottom:5px">Community</label>';
+    h+='<select id="newConComm" class="input" style="cursor:pointer">';
+    h+='<option value="">Select community</option>';
+    h+='<option value="Fora Travel">Fora Travel</option>';
+    state.entries.forEach(function(e){h+='<option value="'+e.name+'">'+e.name+'</option>';});
+    h+='</select></div>';
+    h+='<div style="flex:1"><label class="t-sm" style="display:block;margin-bottom:5px">Contact method</label>';
+    h+='<select id="newConMethod" class="input" style="cursor:pointer">';
+    h+='<option value="text">Text / iMessage</option><option value="instagram">Instagram DM</option><option value="email">Email</option><option value="inperson">In person</option><option value="linkedin">LinkedIn</option>';
+    h+='</select></div></div>';
+    h+='<div style="display:flex;gap:10px;margin-top:4px">';
+    h+='<button class="btn btn-primary" style="padding:10px 24px;font-size:13px" onclick="addCon()">Add contact</button>';
+    h+='<button class="btn btn-ghost" style="padding:10px 18px;font-size:13px" onclick="toggleAddCon()">Cancel</button>';
+    h+='</div></div></div>';
+  }
+  
+  // Group contacts by community
+  var groups={};
+  state.contacts.forEach(function(c){
+    var k=c.community||'Unlinked';
+    if(!groups[k])groups[k]=[];
+    groups[k].push(c);
+  });
+  
+  Object.keys(groups).forEach(function(g){
+    var entry=state.entries.find(function(e){return e.name===g;});
+    var cat=entry?catFor(entry.catId):{emoji:'👤',color:'var(--text3)',bg:'var(--surface)',glow:'var(--surface)'};
+    h+='<div style="margin-bottom:20px">';
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">';
+    h+='<span style="font-size:13px">'+(cat.emoji||'👤')+'</span>';
+    h+='<span class="t-label" style="color:'+(cat.color||'var(--text3)')+'">'+g+' ('+groups[g].length+')</span>';
+    h+='</div>';
+    
+    groups[g].forEach(function(c,i){
+      h+='<div class="glass anim-node" style="display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:8px;animation-delay:'+(i*80)+'ms">';
+      h+='<div style="width:38px;height:38px;border-radius:50%;background:'+(cat.bg||'var(--surface)')+';border:1px solid '+(cat.glow||'var(--glass-border)')+';display:flex;align-items:center;justify-content:center">';
+      h+='<span style="font-size:14px;font-weight:700;color:'+(cat.color||'var(--text)')+'">'+c.name[0]+'</span></div>';
+      h+='<div style="flex:1"><p class="t-h3">'+c.name+'</p><p class="t-sm">'+c.method+'</p></div>';
+      h+='</div>';
+    });
+    h+='</div>';
+  });
+  
+  if(state.contacts.length===0){
+    h+='<div class="glass" style="padding:40px;text-align:center;border-style:dashed">';
+    h+='<div style="font-size:28px;margin-bottom:14px;opacity:0.4">👤</div>';
+    h+='<p class="t-body" style="margin-bottom:6px">No contacts yet.</p>';
+    h+='<p class="t-sm">As you think through your communities, names will come to mind. Add them here and we\'ll organize them by community.</p>';
+    h+='</div>';
+  }
+  
+  if(state.contacts.length>0){
+    h+='<div class="glass glass-warm" style="padding:16px;text-align:center;margin-top:12px">';
+    h+='<span class="t-h3" style="color:var(--cream)">'+state.contacts.length+' contacts across '+Object.keys(groups).length+' communities</span>';
+    h+='</div>';
+  }
+  
+  h+='</div>';
+  return h;
+}
+
+/* ═══ DM SCRIPTS TAB ═══ */
+function renderScripts(){
+  var h='<div class="anim-up">';
+  h+='<h2 class="t-h2" style="margin-bottom:4px">DM scripts for your communities</h2>';
+  h+='<p class="t-body" style="margin-bottom:28px">These are examples to adapt in your own voice. Three tiers — pick the one that fits where you are in the relationship.</p>';
+  
+  h+='<div style="display:flex;flex-direction:column;gap:20px">';
+  DMS.forEach(function(s,i){
+    var colors=[{c:F.t2,g:F.t2g},{c:F.ai,g:F.aig},{c:F.t3,g:F.t3g}][i];
+    h+='<div class="glass anim-node" style="padding:24px;animation-delay:'+(i*120)+'ms">';
+    h+='<div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">';
+    h+='<span class="pill" style="background:'+colors.c+'18;color:'+colors.c+';border:1px solid '+colors.c+'30">'+s.tier+'</span>';
+    h+='<span class="t-sm">'+s.tone+'</span></div>';
+    
+    // Message bubble with glow
+    h+='<div style="padding:20px;background:var(--surface2);border-radius:var(--r-sm);margin-bottom:16px;position:relative;overflow:hidden">';
+    h+='<div style="position:absolute;bottom:0;left:10%;right:10%;height:40%;background:radial-gradient(ellipse at 50% 100%,'+colors.c+'10,transparent);pointer-events:none"></div>';
+    h+='<p style="font-size:13px;line-height:1.65;font-style:italic;color:var(--text);position:relative">"'+s.text+'"</p>';
+    h+='</div>';
+    
+    // Why it works
+    h+='<div style="display:flex;gap:12px;padding:16px;background:rgba(243,235,226,0.03);border-radius:var(--r-sm);border:1px solid rgba(243,235,226,0.06)">';
+    h+='<span style="font-size:14px;flex-shrink:0;margin-top:1px">💡</span>';
+    h+='<div><p class="t-h3" style="color:var(--cream);margin-bottom:4px;font-size:11px">Why it works</p>';
+    h+='<p class="t-sm" style="line-height:1.6">'+s.why+'</p></div></div>';
+    
+    h+='<button class="btn btn-ghost" style="margin-top:14px;padding:10px 18px;font-size:12px">📋 Copy to clipboard</button>';
+    h+='</div>';
+  });
+  h+='</div></div>';
+  return h;
+}
+
+/* ═══ PROFILE TAB ═══ */
+function renderProfile(){
+  var h='<div class="anim-up" style="display:flex;gap:28px;flex-wrap:wrap">';
+  
+  // Main column
+  h+='<div style="flex:1;min-width:300px">';
+  h+='<h2 class="t-h2" style="margin-bottom:4px">Your advisor profile</h2>';
+  h+='<p class="t-body" style="margin-bottom:28px">This powers your personalized outreach plan. Edit anything to refine your recommendations.</p>';
+  
+  // Communities card
+  h+='<div class="glass" style="padding:24px;margin-bottom:16px">';
+  h+='<p class="t-h3" style="margin-bottom:14px">Communities ('+state.entries.length+')</p>';
+  state.entries.forEach(function(e){
+    var cat=catFor(e.catId);
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)">';
+    h+='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:13px">'+cat.emoji+'</span><span style="font-size:13px">'+e.name+'</span></div>';
+    if(e.count) h+='<span class="t-sm" style="color:'+cat.color+'">'+e.count+' people</span>';
+    h+='</div>';
+  });
+  if(state.entries.length===0){
+    h+='<p class="t-sm" style="padding:12px 0">Complete the quiz to add your communities here.</p>';
+  }
+  h+='</div>';
+  
+  // Dream client
+  h+='<div class="glass glass-warm" style="padding:24px;margin-bottom:16px">';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:15px">🎯</span><p class="t-h3" style="color:var(--cream)">Your dream client</p></div>';
+  h+='<p class="t-body" style="margin-bottom:12px">Describe your ideal client. This helps us tailor your outreach strategies.</p>';
+  h+='<textarea class="input" rows="3" placeholder="e.g., High-net-worth families in Westchester who travel 3+ times per year, prefer luxury resorts, and have school-age children." style="resize:vertical">'+state.icp+'</textarea>';
+  h+='</div>';
+  
+  // Writing style
+  h+='<div class="glass" style="padding:24px;margin-bottom:16px">';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:15px">✍️</span><p class="t-h3">Writing style</p></div>';
+  h+='<p class="t-body" style="margin-bottom:12px">How do you naturally write to clients? This powers your DM scripts.</p>';
+  h+='<textarea class="input" rows="3" placeholder="e.g., Warm and conversational. I use exclamation points sparingly. I call clients by first name." style="resize:vertical">'+state.ws+'</textarea>';
+  h+='</div>';
+  
+  // Brand phrases
+  h+='<div class="glass" style="padding:24px">';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:15px">✨</span><p class="t-h3" style="color:'+F.ai+'">Brand phrases & voice</p></div>';
+  h+='<p class="t-body" style="margin-bottom:12px">Words and phrases you always use (or never use) when talking to clients.</p>';
+  h+='<textarea class="input" rows="3" placeholder="e.g., Always say: &quot;let me handle everything&quot;, &quot;curated for you&quot;\nNever say: &quot;cheap&quot;, &quot;deal&quot;, &quot;budget&quot;" style="resize:vertical">'+state.bp+'</textarea>';
+  h+='</div>';
+  h+='</div>';
+  
+  // Sidebar
+  h+='<div class="sidebar" style="width:300px;flex-shrink:0">';
+  h+='<div class="glass glass-warm" style="padding:24px;position:sticky;top:24px">';
+  // Avatar
+  h+='<div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">';
+  h+='<div style="width:48px;height:48px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center"><span style="font-size:20px;font-weight:700;color:var(--bg)">R</span></div>';
+  h+='<div><p class="t-h3" style="color:var(--cream)">Rachel Kim</p><p class="t-sm">Fora Travel Advisor</p></div></div>';
+  
+  // Profile completeness
+  var items=[{l:'Communities',d:state.entries.length>0},{l:'Dream client',d:!!state.icp},{l:'Writing style',d:!!state.ws},{l:'Brand phrases',d:!!state.bp}];
+  var pct=items.filter(function(i){return i.d;}).length/items.length*100;
+  h+='<div style="margin-bottom:24px">';
+  h+='<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span class="t-sm">Profile completeness</span>';
+  h+='<span class="pill" style="background:'+(pct===100?F.t2+'18':F.t3+'18')+';color:'+(pct===100?F.t2:F.t3)+'">'+Math.round(pct)+'%</span></div>';
+  h+='<div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:3px;background:'+(pct===100?F.t2:F.cream)+';border-radius:2px;width:'+pct+'%;transition:width 0.4s"></div></div>';
+  h+='<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">';
+  items.forEach(function(it){h+='<span class="t-sm" style="color:'+(it.d?F.t2:'var(--text3)')+'">'+(it.d?'✓':'○')+' '+it.l+'</span>';});
+  h+='</div></div>';
+  
+  // Network stats
+  h+='<div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px">';
+  h+='<p class="t-sm" style="margin-bottom:10px">Your network</p>';
+  h+='<p style="font-size:28px;font-weight:700;color:var(--cream)">'+state.entries.length+'</p>';
+  h+='<p class="t-sm">communities</p>';
+  var totalC=state.entries.reduce(function(s,e){return s+(e.count||0);},0);
+  if(totalC>0){
+    h+='<div style="margin-top:10px"><p style="font-size:22px;font-weight:700;color:var(--cream)">'+totalC+'</p>';
+    h+='<p class="t-sm">estimated connections</p></div>';
+  }
+  h+='</div></div></div>';
+  
+  h+='</div>';
+  return h;
+}
+
+/* ═══ INIT ═══ */
+render();
+</script>
+</body>
+</html>

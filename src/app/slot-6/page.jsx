@@ -1,29 +1,21 @@
-"use client";
-import ReferralEngine from "../../components/ReferralEngine";
+"use client"
 
-export default function Slot3() {
+export default function Slot6() {
   return (
-    <div>
-      <div style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999,
-        background: "#1B2A4A", padding: "6px 16px",
-        display: "flex", justifyContent: "space-between", alignItems: "center",
-        fontFamily: "'DM Sans', -apple-system, sans-serif",
-        borderBottom: "2px solid #2A9D8F"
-      }}>
-        <a href="/" style={{ color: "#94A3B8", fontSize: 12, textDecoration: "none" }}>
-          ← All Slots
-        </a>
-        <span style={{ color: "#E9C46A", fontSize: 11, fontWeight: 600, letterSpacing: 0.5 }}>
-          SLOT 6 — REFERRAL ENGINE v2.0
-        </span>
-        <span style={{ color: "#6B7280", fontSize: 10 }}>
-          Phase 2 Feature Showcase
-        </span>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "#0C0B0F" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <a href="/" style={{ fontSize: 12, color: "rgba(245,241,236,0.5)", textDecoration: "none", fontFamily: "'Lato',system-ui,sans-serif" }}>← All slots</a>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#F3EBE2", fontFamily: "'Lato',system-ui,sans-serif" }}>Slot 6 · ACT Elevated Design Direction</span>
+          <span style={{ fontSize: 9, fontWeight: 700, padding: "3px 10px", borderRadius: 20, background: "rgba(134,85,246,0.12)", color: "#8655F6", border: "1px solid rgba(134,85,246,0.2)" }}>NEW</span>
+        </div>
+        <span style={{ fontSize: 10, color: "rgba(245,241,236,0.3)", fontFamily: "'Lato',system-ui,sans-serif" }}>Apr 9, 2026</span>
       </div>
-      <div style={{ paddingTop: 36 }}>
-        <ReferralEngine />
-      </div>
+      <iframe
+        src="/act-elevated-v5.html"
+        style={{ flex: 1, border: "none", width: "100%", minHeight: "calc(100vh - 44px)" }}
+        title="ACT Elevated v5"
+      />
     </div>
-  );
+  )
 }

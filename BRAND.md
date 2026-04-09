@@ -1,12 +1,12 @@
 ---
 title: "Claude Code Brand Instructions — ACT Phase 1"
-version: 1.1.0
+version: 2.0.0
 upom_tag: claude-code-brand-instructions-act
 status: production-ready
 aicopilot_chat_url: "https://claude.ai/chat"
 created_date: 2026-04-07
-last_modified: "2026-04-07 12:00:00 UTC"
-changelog: "1.0.0 — Initial consolidated instruction file for Claude Code. Synthesized from pgl-brand-system-reference-v1.md (v1.3.0), fora-brand-guidelines-extracted-v1.md (v1.0.0), prompts-proto-interactiveforge-v2.md (v2.2.0), checklist-act-prototype-selfaudit-v2.md (v2.0.0), Color Use.pdf, Font Use.pdf, and scope-lock-act-phase1-v1.md (v1.0.0)."
+last_modified: "2026-04-07 14:00:00 UTC"
+changelog: "2.0.0 — Validated against 13 live Fora website/portal/social screenshots. Added marketing-vs-Portal distinction table. Added sidebar nav spec. Added photography stance. Added page header pattern. Added footer pattern. Minor token clarifications. 1.1.0 — Added COLOR ENFORCEMENT block. 1.0.0 — Initial consolidated file from 7 sources."
 ---
 
 # ACT — Claude Code Brand Instructions
@@ -26,6 +26,15 @@ changelog: "1.0.0 — Initial consolidated instruction file for Claude Code. Syn
 | `bg-blue-*`, `bg-teal-*`, `bg-emerald-*` Tailwind classes | Custom Fora tokens only. No default Tailwind color classes. |
 
 **Fora's brand is warm cream + near-black.** NOT blue. NOT teal. NOT navy. The Advisor Portal is a white-background app with cream accent sections and near-black text. If your output looks like a generic SaaS dashboard with blue headers, you read this wrong.
+
+**⚠️ TWO FORA DESIGN LANGUAGES EXIST — USE THE RIGHT ONE:**
+
+| Surface | Design Language | ACT Uses? |
+|---|---|---|
+| **foratravel.com** (marketing) | Blanco serif headlines, photography-heavy heroes, warm cream page backgrounds, outlined CTAs with thick borders, press logo bars, geometric gold pattern overlays | **NO** |
+| **advisor.fora.travel** (Portal) | Lato sans-serif, white-first backgrounds, left sidebar icon nav, subtle borders, functional card layouts, ghost/minimal buttons, green progress indicators | **YES — this is ACT's reference** |
+
+If you see Fora's marketing site and try to recreate its serif headlines, full-bleed hero photos, or heavy cream backgrounds — STOP. ACT follows the Portal design system: clean, white, functional, tool-like.
 
 ---
 
@@ -127,6 +136,43 @@ Fallback: `system-ui, sans-serif`. Weights: 400, 600, 700 ONLY.
 
 ---
 
+## SIDEBAR NAVIGATION (Portal Pattern)
+
+The Advisor Portal uses a left sidebar with icon navigation. ACT follows this pattern.
+
+| Property | Value |
+|---|---|
+| Background | `#FFFFFF` |
+| Width (collapsed) | 56px — icons only, no labels |
+| Width (expanded) | 240px — icon + text label |
+| Border-right | `1px solid #D8D8D8` |
+| Position | Fixed left, full viewport height |
+| Icon size | 20px, Lucide line-style |
+| Icon color (default) | `#636363` |
+| Icon color (active) | `#212121` |
+| Active indicator | `3px left border #212121` or `bg/brand-light` (#FAF6F2) row highlight |
+| Group separator | `1px solid #F5F5F5` |
+| Logo placement | Fora icon mark at sidebar top, 40px size, centered |
+
+At laptop breakpoint (≥1024px), sidebar collapses to icons. Below 768px, sidebar hidden (Phase 2).
+
+---
+
+## PAGE HEADERS
+
+**Do NOT copy foratravel.com's warm cream hero banners with serif text.** Those are marketing patterns.
+
+ACT page headers are simple:
+- Background: `#FFFFFF` (white)
+- Title: H1 (30px Lato Bold), `#212121`
+- Subtitle/description: Body (15px Lato Regular), `#636363`
+- Bottom border: `1px solid #D8D8D8`
+- Padding: 24px horizontal, 20px vertical
+
+No hero images. No cream backgrounds on page headers. No serif fonts.
+
+---
+
 ## BREAKPOINTS
 
 | Name | Width | Layout |
@@ -147,7 +193,7 @@ Library: `lucide-react@0.383.0`. Line-style only. Never filled.
 | Size | Use |
 |---|---|
 | 16px | Inline with text |
-| 20px | Default (buttons, nav) |
+| 20px | Default (buttons, nav, sidebar) |
 | 24px | Hero/feature icons |
 
 Color: `#636363` default. `#212121` active/selected. Semantic colors for status only.
@@ -199,12 +245,14 @@ Color: `#636363` default. `#212121` active/selected. Semantic colors for status 
 |---|---|
 | No navy `#1B2A4A`, teal `#2A9D8F`, gold `#E9C46A` | Marketing-only. Not Portal tokens. |
 | No Sangria `#870D13`, Olive `#77742A`, Indigo `#333880` | Brand secondary accents. Not in Portal system. |
+| No hero photography or full-bleed images | Marketing site pattern. ACT is a functional tool — use icons and data viz. |
+| No Blanco serif or Chiswick Sans Text | Marketing/brand book fonts. ACT uses Lato only (Alex-approved). |
+| No warm cream page headers or hero banners | Marketing pattern. ACT page headers are white with simple text. |
 | No goals display, no outreach tracking | Scope-lock R-04, R-06. |
 | No Fora live data connection | Scope-lock R-03. |
 | No data consent screen | Scope-lock R-05. Killed permanently. |
 | No archetype bucketing | Scope-lock CUT-11. Killed permanently. |
 | No dark mode | Not in scope. Single cream/white theme. |
-| No Blanco or Chiswick Sans Text | Brand book fonts. ACT uses Lato only (Alex-approved). |
 
 ---
 
@@ -228,6 +276,8 @@ Wordmark SVG: `public/Fora_Logo_Wordmark_Black-Sand.svg` (fill: `#131313`).
 Icon SVG: `public/Fora_Logo_Icon_Black-Sand.svg` (fill: `#131313`).
 Min wordmark width: 30px. Min icon size: 50px. Clearspace: 0.5× icon width around all sides.
 On cream backgrounds: use Sand variant (fill: `#FEFAF5`).
+Sidebar placement: Icon mark centered at top of sidebar, 40px.
+Page footer: Icon mark left-aligned, 32px.
 
 ---
 
@@ -244,4 +294,5 @@ Example: `⚡ ACT — Network Mapper v2.0.0 · 2026-04-07`
 | Version | Date | Change |
 |---|---|---|
 | 1.0.0 | 2026-04-07 | Initial creation. Consolidated from 7 source files into single Claude Code instruction surface. |
-| 1.1.0 | 2026-04-07 | Added COLOR ENFORCEMENT block at line 1. Claude hallucinates travel-brand blues/teals without aggressive guardrails. Remapping table prevents the 6 most common hallucinated palettes. |
+| 1.1.0 | 2026-04-07 | Added COLOR ENFORCEMENT block at line 1. Claude hallucinates travel-brand blues/teals without aggressive guardrails. |
+| 2.0.0 | 2026-04-07 | Validated against 13 live Fora screenshots (foratravel.com, advisor.fora.travel, social). Added marketing-vs-Portal distinction table. Added SIDEBAR NAVIGATION spec. Added PAGE HEADERS pattern. Added photography/hero ban to DO NOT. Added logo placement for sidebar/footer. Expanded DO NOT table with 3 new rules. |
