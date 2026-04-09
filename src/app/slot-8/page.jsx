@@ -1,2 +1,14 @@
-"use client"
-export default function Slot8Page(){return(<div style={{fontFamily:"'Lato',system-ui,sans-serif"}}><div style={{padding:"8px 16px",borderBottom:"1px solid #D8D8D8",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:13}}><a href="/" style={{color:"#2166DB",textDecoration:"none",fontWeight:600}}>← All slots</a><span style={{color:"#636363",fontSize:11}}>Slot 8 · Empty</span></div><div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:12}}><div style={{fontSize:36,opacity:.2}}>◇</div><div style={{fontSize:15,fontWeight:600,color:"#212121"}}>Slot 8</div><div style={{fontSize:13,color:"#636363"}}>Drop a component into src/components/ and wire it here</div></div></div>)}
+"use client";
+import SalesJourneyMap from "../../components/SalesJourneyMap";
+
+export default function Slot8Page() {
+  return (
+    <div>
+      <div style={{ padding: "8px 16px", background: "#FAF6F2", borderBottom: "1px solid #E5DBD0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <a href="/" style={{ fontSize: 13, color: "#8655F6", textDecoration: "none", fontFamily: "'Lato', sans-serif", fontWeight: 600 }}>← All slots</a>
+        <span style={{ fontSize: 11, color: "#999", fontFamily: "'Lato', sans-serif" }}>Slot 8 · Sales Journey Map · Research-Integrated Final</span>
+      </div>
+      <SalesJourneyMap />
+    </div>
+  );
+}
